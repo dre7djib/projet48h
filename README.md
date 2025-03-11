@@ -1,4 +1,4 @@
-# 🚀 Challenge 48 Heures : Équipe 4  
+# 🚀 Challenge 48 Heures DATA/DEV : Analyse des tweets clients d'Engie et paramétrage d'Agents IA 
 
 ## 📌 Présentation  
 Ce projet vise à analyser les tweets relatifs à ENGIE afin d'extraire des indicateurs clés (KPI) et d'automatiser la gestion des réclamations via un agent IA basé sur **Gemini 1.5 Flash**.  
@@ -145,4 +145,8 @@ streamlit run streamlit.py
 Une interface s’ouvrira dans votre navigateur avec des graphiques et filtres interactifs
 
 ## 📌 Auteurs
-📍 Équipe 4 – Challenge 48H 🚀
+📍 BEN YOUSSEF Sajed
+📍 CAMARA Djibril
+📍 LIENARD Mathieu
+📍 DUMET Ludovic
+📍 SOUBRAMANIEN Baayvin
