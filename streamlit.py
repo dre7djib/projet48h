@@ -56,6 +56,21 @@ def histogramme_score(df):
     st.write('## Distribution des Scores')
     st.bar_chart(df_count.set_index('Score'))
 
+def tableau_plaintes(df):
+    df_complaints = df[df['Type'].str.contains('Plainte', na=False)]
+    st.write('## Tableau des plaintes')
+    st.dataframe(df_complaints)
+
+def tableau_questions(df):
+    df_questions = df[df['Type'].str.contains('Question', na=False)]
+    st.write('## Tableau des questions')
+    st.dataframe(df_questions)
+
+def tableau_positifs(df):
+    df_positifs = df[df['Sentiment'].str.contains('Positif', na=False)]
+    st.write('## Tableau des tweets positifs')
+    st.dataframe(df_positifs)
+
 
 
 
@@ -67,7 +82,10 @@ charts = [
     MyChart("Histogramme Sentiment", ["Histogramme", "Sentiment"], histogramme_sentiment),
     MyChart("Camembert Problématique", ["Camembert", "Problematique"], camembert_problématique),
     MyChart("Histogramme Problématique", ["Histogramme", "Problematique"], histogramme_problematique),
-    MyChart("Histogramme Score", ["Score", "Histogramme"], histogramme_score)
+    MyChart("Histogramme Score", ["Score", "Histogramme"], histogramme_score),
+    MyChart("Tableau Plaintes", ["Tableau", "Plainte"], tableau_plaintes),
+    MyChart("Tableau Questions", ["Tableau", "Question"], tableau_questions),
+    MyChart("Tableau Positifs", ["Tableau", "Positif"], tableau_positifs)
 ]
 
 with st.sidebar:
