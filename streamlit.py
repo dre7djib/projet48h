@@ -40,12 +40,18 @@ def camembert_problématique(df):
     fig = px.pie(df_count, names='Problematique', values='count', title='Répartition des Problematiques')
     st.plotly_chart(fig)
 
+def histogramme_score(df):
+    st.write('## Distribution des Scores')
+    fig = px.histogram(df, x='Score', nbins=20, title='Histogramme des Scores')
+    st.plotly_chart(fig)
+
 st.title('Dashboard Projet 48h')
 charts = [
     MyChart("Graphique 1", ["Temps", "Heure","Historigramme"], nb_tweets_par_heure),
     MyChart("Graphique 2", ["Temps","Mois","Historigramme"], nb_tweets_par_mois),
     MyChart("Graphique 3", ["Camembert", "Sentiment"], camembert_sentiment),
-    MyChart("Graphique 4", ["Camembert", "Problematique"], camembert_problématique)
+    MyChart("Graphique 4", ["Camembert", "Problematique"], camembert_problématique),
+    MyChart("Graphique 5", ["Score", "Historigramme"], histogramme_score)
 ]
 
 with st.sidebar:
@@ -55,6 +61,3 @@ with st.sidebar:
 for chart in charts:
     if not selected_tags or any(tag in chart.tags for tag in selected_tags):
         fig = chart.chart_function(df)
-
-
-
