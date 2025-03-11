@@ -16,6 +16,7 @@ class MyChart:
 uploaded_file = "filtered_tweets_engie_cleaned.csv"
 df = pd.read_csv('filtered_tweets_engie_cleaned.csv', sep=';')
 
+
 def nb_tweets_par_heure(df):
     df_count = df.groupby("heure").size().reset_index(name='count')
     st.write('## Nombre de tweets par heure')
@@ -33,6 +34,11 @@ def camembert_sentiment(df):
     fig = px.pie(df_count, names='Sentiment', values='count', title='Répartition des Sentiments')
     st.plotly_chart(fig)
 
+def histogramme_sentiment(df):
+    df_count = df.groupby("Sentiment").size().reset_index(name='count')
+    st.write('## Histogramme des Sentiments')
+    st.bar_chart(df_count.set_index('Sentiment'))
+
 def camembert_problématique(df):
     df_count = df['Problematique'].value_counts().reset_index()
     df_count.columns = ['Problematique', 'count']
@@ -45,13 +51,18 @@ def histogramme_score(df):
     fig = px.histogram(df, x='Score', nbins=20, title='Histogramme des Scores')
     st.plotly_chart(fig)
 
+
+
 st.title('Dashboard Projet 48h')
 charts = [
-    MyChart("Graphique 1", ["Temps", "Heure","Historigramme"], nb_tweets_par_heure),
-    MyChart("Graphique 2", ["Temps","Mois","Historigramme"], nb_tweets_par_mois),
-    MyChart("Graphique 3", ["Camembert", "Sentiment"], camembert_sentiment),
-    MyChart("Graphique 4", ["Camembert", "Problematique"], camembert_problématique),
-    MyChart("Graphique 5", ["Score", "Historigramme"], histogramme_score)
+    MyChart("Nombre de tweet par heure", ["Temps", "Heure","Histogramme"], nb_tweets_par_heure),
+    MyChart("Nombre de tweet par heure", ["Temps","Mois","Histogramme"], nb_tweets_par_mois),
+    MyChart("Camembert Sentiment", ["Camembert", "Sentiment"], camembert_sentiment),
+    MyChart("Histogramme Sentiment", ["Histogramme", "Sentiment"], histogramme_sentiment),
+    MyChart("Camembert Problématique", ["Camembert", "Problematique"], camembert_problématique),
+    MyChart("Histogramme Problématique", ["Histogramme", "Problematique"], histogramme_score),
+    MyChart("Histogramme Score", ["Score", "Histogramme"], histogramme_score)
+    
 ]
 
 with st.sidebar:
