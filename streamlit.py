@@ -3,11 +3,16 @@ import pandas as pd
 import plotly.express as px
 from geopy.geocoders import Nominatim
 import requests
+import re
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+import string
 
 #pip3 install streamlit
 #pip3 install pandas
 #pip3 install plotly
-#pip3 install openpyxl  
+#pip3 install openpyxl 
+#pip install wordcloud 
 
 geolocator = Nominatim(user_agent="myGeocoder")
 
@@ -118,7 +123,44 @@ def map_lieu(df):
     coordinates_df['longitude'] = coordinates_df['longitude'].astype(float)
     st.map(coordinates_df)
 
+mots_a_exclure = {
+    "à", "de", "pour","fois","quoi","encore","leur","trop", "https", "la", "le", "les", "je", "sur", "ne", "ce", "pas", "et", "vous", "en", "faire", "fait",
+    "dans", "moi", "c'est", "plus", "sans", "un", "des", "au", "par", "c est", "t", "c  est", "co", "est", "alors", "que",
+    "il", "nous", "ça", "n", "mon", "même", "suis", "ou", "m", "d", "ma", "mes", "êtes", "qu", "ils", "son", "vos", "du",
+    "j'ai", "va", "ont", "car", "là", "nje", "l", "se", "n'est", "donc", "ni", "mais", "voir", "nvous", "une", "avez",
+    "n'ai", "cette", "y", "dites", "plusieurs", "cher", "bonjour", "aucune", "aucun", "toute", "tout", "très", "tu",
+    "peux", "entre", "sont", "j ai", "avoir", "quand", "c", "cela", "notre", "elle", "peut", "sous", "aux", "chez",
+    "votre", "part", "avec", "j  ai", "d'un", "tous", "tout", "toutes", "sa", "bon", "vais", "merde", "depuis",
+    "dernière", "avant", "soit", "mère", "parle", "non", "qu' il", "quel", "juste", "dit", "moins", "nj'ai", "j", "ai",
+    "après", "qu'il", "où", "voulez", "comme", "engie", "engiepart", "engieconso", "engiepartsav", "engiepartfr",
+    "engiegroup", "qui", "jour", "mois", "jamais", "rien", "été", "normal", "faut", "jours", "dire", "semaine", "deux",
+    "si", "?", "!", "2", "3", ",", "@engiepartfr", "@engiegroup", "@engiepartsav", "c'est", "cest", "d", "l", "c'est", ":", "."
+}
 
+def nettoyer_texte(texte):
+    texte = str(texte).lower()
+    texte = re.sub(r"http\S+", "", texte)
+    texte = re.sub(r"@\w+", "", texte)
+    texte = re.sub(r"[’‘']", " ", texte)
+    texte = texte.translate(str.maketrans("", "", string.punctuation))
+    mots = texte.split()
+    mots_filtres = [mot for mot in mots if mot not in mots_a_exclure and len(mot) > 1]
+    return " ".join(mots_filtres)
+
+def nuage_mots(df) : 
+    df["clean_text"] = df["full_text"].apply(nettoyer_texte)
+
+    st.write('## Nuage de mots des tweets')
+
+    texte_global = " ".join(df["clean_text"])
+
+    if st.button("Générer le nuage de mots"):
+        wordcloud = WordCloud(width=800, height=400, background_color="white").generate(texte_global)
+        
+        fig, ax = plt.subplots(figsize=(10, 5))
+        ax.imshow(wordcloud, interpolation="bilinear")
+        ax.axis("off")
+        st.pyplot(fig)
 
 
 st.title('Dashboard Projet 48h')
@@ -135,6 +177,7 @@ charts = [
     MyChart("Tableau Positifs", ["Tableau", "Positif"], tableau_positifs),
     MyChart("Histogramme Type", ["Histogramme", "Type"], histogramme_type),
     MyChart("Camembert Type", ["Camembert", "Type"], camembert_type),
+    MyChart("Nuage de mots", ["Nuage de point", "Mots"], nuage_mots),
     MyChart("Map Lieu", ["Map", "Lieu"], map_lieu)
 ]
 
