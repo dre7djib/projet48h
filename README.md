@@ -85,7 +85,7 @@ aucune : l'utilisateur n'a pas de problème.
 
 L’outil est divisé en **deux fichiers principaux** :  
 
-### 📌 **1. a.ipynb** (Notebook de traitement des données)  
+### 📌 **1. tweets_processing.ipynb** (Notebook de traitement des données)  
 🟢 **Importation & Nettoyage des Données**  
 - Chargement du fichier `filtered_tweets_engie.csv`  
 - Suppression des colonnes inutiles et nettoyage des caractères spéciaux  
@@ -130,9 +130,9 @@ pip install openpyxl
 
 ## 🎯 Utilisation
 
-### 1️⃣ Exécuter le notebook Jupyter (a.ipynb)
+### 1️⃣ Exécuter le notebook Jupyter (tweets_processing.ipynb)
 
-Ouvrir a.ipynb dans Jupyter Notebook ou VS Code
+Ouvrir tweets_processing.ipynb dans Jupyter Notebook ou VS Code
 Exécuter les cellules pour traiter et analyser les tweets
 Un fichier nettoyé filtered_tweets_engie_cleaned.csv sera généré
 
