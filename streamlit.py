@@ -1,11 +1,15 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+from geopy.geocoders import Nominatim
+import requests
 
 #pip3 install streamlit
 #pip3 install pandas
 #pip3 install plotly
 #pip3 install openpyxl  
+
+geolocator = Nominatim(user_agent="myGeocoder")
 
 class MyChart:
     def __init__(self, title, tags, chart_function):
@@ -15,6 +19,23 @@ class MyChart:
 
 uploaded_file = "filtered_tweets_engie_cleaned.csv"
 df = pd.read_csv('filtered_tweets_engie_cleaned.csv', sep=';')
+
+def get_coordinates(city_name):
+    url = "https://nominatim.openstreetmap.org/search"
+    params = {
+        'q': city_name,
+        'format': 'json',
+        'limit': 1
+    }
+    response = requests.get(url, params=params, headers={'User-Agent': 'Mozilla/5.0'})
+    data = response.json()
+    
+    if data:
+        latitude = data[0]['lat']
+        longitude = data[0]['lon']
+        return latitude, longitude
+    else:
+        return None, None
 
 
 def nb_tweets_par_heure(df):
@@ -71,6 +92,31 @@ def tableau_positifs(df):
     st.write('## Tableau des tweets positifs')
     st.dataframe(df_positifs)
 
+def histogramme_type(df):
+    df_count = df.groupby("Type").size().reset_index(name='count')
+    st.write('## Histogramme des Types')
+    st.bar_chart(df_count.set_index('Type'))
+
+def camembert_type(df):
+    df_count = df['Type'].value_counts().reset_index()
+    df_count.columns = ['Type', 'count']
+    st.write('## Répartition des Types')
+    fig = px.pie(df_count, names='Type', values='count', title='Répartition des Types')
+    st.plotly_chart(fig)
+
+def map_lieu(df):
+    locations_with_value = df['Lieu'].dropna().unique().tolist()
+    coordinates = []
+    for location in locations_with_value:
+        lat, lon = get_coordinates(location)
+        if lat is not None and lon is not None:
+            coordinates.append({'Lieu': location, 'latitude': lat, 'longitude': lon})
+
+    coordinates_df = pd.DataFrame(coordinates)
+    coordinates_df['latitude'] = coordinates_df['latitude'].astype(float)
+    coordinates_df['longitude'] = coordinates_df['longitude'].astype(float)
+    st.map(coordinates_df)
+
 
 
 
@@ -85,7 +131,10 @@ charts = [
     MyChart("Histogramme Score", ["Score", "Histogramme"], histogramme_score),
     MyChart("Tableau Plaintes", ["Tableau", "Plainte"], tableau_plaintes),
     MyChart("Tableau Questions", ["Tableau", "Question"], tableau_questions),
-    MyChart("Tableau Positifs", ["Tableau", "Positif"], tableau_positifs)
+    MyChart("Tableau Positifs", ["Tableau", "Positif"], tableau_positifs),
+    MyChart("Histogramme Type", ["Histogramme", "Type"], histogramme_type),
+    MyChart("Camembert Type", ["Camembert", "Type"], camembert_type),
+    MyChart("Map Lieu", ["Map", "Lieu"], map_lieu)
 ]
 
 with st.sidebar:
