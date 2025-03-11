@@ -1,6 +1,10 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
 
+#pip3 install streamlit
+#pip3 install pandas
+#pip3 install plotly
 #pip3 install openpyxl  
 
 class MyChart:
@@ -9,8 +13,9 @@ class MyChart:
         self.tags = tags 
         self.chart_function = chart_function 
 
-uploaded_file = "filtered_tweets_engie_cleaned.xlsx"
-df = pd.read_excel(uploaded_file)
+uploaded_file = "filtered_tweets_engie_cleaned.csv"
+df = pd.read_csv('filtered_tweets_engie_cleaned.csv', sep=';')
+print(df.columns)
 
 def nb_tweets_par_heure(df):
     df_count = df.groupby("heure").size().reset_index(name='count')
@@ -23,15 +28,17 @@ def nb_tweets_par_mois(df):
     st.bar_chart(df_count.set_index('mois'))
 
 def camembert_sentiment(df):
-    df_count = df.groupby("Sentiment").size().reset_index(name='count')
+    df_count = df['Sentiment'].value_counts().reset_index()
+    df_count.columns = ['Sentiment', 'count']
     st.write('## Répartition des Sentiments')
-    st.pie_chart(df_count.set_index('Sentiment'))
+    fig = px.pie(df_count, names='Sentiment', values='count', title='Répartition des Sentiments')
+    st.plotly_chart(fig)
 
 st.title('Dashboard Projet 48h')
 charts = [
     MyChart("Graphique 1", ["Temps", "Heure","Historigramme"], nb_tweets_par_heure),
-    MyChart("Graphique 1", ["Temps","Mois","Historigramme"], nb_tweets_par_mois),
-    MyChart("Graphique 3", ["Camembert", "Sentiment"], camembert_sentiment),
+    MyChart("Graphique 2", ["Temps","Mois","Historigramme"], nb_tweets_par_mois),
+    MyChart("Graphique 3", ["Camembert", "Sentiment"], camembert_sentiment)
 ]
 
 with st.sidebar:
