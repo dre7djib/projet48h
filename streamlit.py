@@ -105,6 +105,7 @@ def camembert_type(df):
     st.plotly_chart(fig)
 
 def map_lieu(df):
+    st.write('## Carte des lieux')
     locations_with_value = df['Lieu'].dropna().unique().tolist()
     coordinates = []
     for location in locations_with_value:
