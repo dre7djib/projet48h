@@ -46,10 +46,16 @@ def camembert_problématique(df):
     fig = px.pie(df_count, names='Problematique', values='count', title='Répartition des Problematiques')
     st.plotly_chart(fig)
 
+def histogramme_problematique(df):
+    df_count = df.groupby("Problematique").size().reset_index(name='count')
+    st.write('## Histogramme des Problematiques')
+    st.bar_chart(df_count.set_index('Problematique'))
+
 def histogramme_score(df):
+    df_count = df.groupby("Score").size().reset_index(name='count')
     st.write('## Distribution des Scores')
-    fig = px.histogram(df, x='Score', nbins=20, title='Histogramme des Scores')
-    st.plotly_chart(fig)
+    st.bar_chart(df_count.set_index('Score'))
+
 
 
 
@@ -60,9 +66,8 @@ charts = [
     MyChart("Camembert Sentiment", ["Camembert", "Sentiment"], camembert_sentiment),
     MyChart("Histogramme Sentiment", ["Histogramme", "Sentiment"], histogramme_sentiment),
     MyChart("Camembert Problématique", ["Camembert", "Problematique"], camembert_problématique),
-    MyChart("Histogramme Problématique", ["Histogramme", "Problematique"], histogramme_score),
+    MyChart("Histogramme Problématique", ["Histogramme", "Problematique"], histogramme_problematique),
     MyChart("Histogramme Score", ["Score", "Histogramme"], histogramme_score)
-    
 ]
 
 with st.sidebar:
