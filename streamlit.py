@@ -15,7 +15,6 @@ class MyChart:
 
 uploaded_file = "filtered_tweets_engie_cleaned.csv"
 df = pd.read_csv('filtered_tweets_engie_cleaned.csv', sep=';')
-print(df.columns)
 
 def nb_tweets_par_heure(df):
     df_count = df.groupby("heure").size().reset_index(name='count')
@@ -34,11 +33,19 @@ def camembert_sentiment(df):
     fig = px.pie(df_count, names='Sentiment', values='count', title='Répartition des Sentiments')
     st.plotly_chart(fig)
 
+def camembert_problématique(df):
+    df_count = df['Problematique'].value_counts().reset_index()
+    df_count.columns = ['Problematique', 'count']
+    st.write('## Répartition des Problematique')
+    fig = px.pie(df_count, names='Problematique', values='count', title='Répartition des Problematiques')
+    st.plotly_chart(fig)
+
 st.title('Dashboard Projet 48h')
 charts = [
     MyChart("Graphique 1", ["Temps", "Heure","Historigramme"], nb_tweets_par_heure),
     MyChart("Graphique 2", ["Temps","Mois","Historigramme"], nb_tweets_par_mois),
-    MyChart("Graphique 3", ["Camembert", "Sentiment"], camembert_sentiment)
+    MyChart("Graphique 3", ["Camembert", "Sentiment"], camembert_sentiment),
+    MyChart("Graphique 4", ["Camembert", "Problematique"], camembert_problématique)
 ]
 
 with st.sidebar:
