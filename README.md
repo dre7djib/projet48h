@@ -73,7 +73,7 @@ aucune : l'utilisateur n'a pas de problème.
 > - "Réparabilité" : Une valeur de 0 (pas de panne) à 5 (panne très coûteuse ou complexe à résoudre). 
 > - "Solution" : Proposer une solution éventuelle en une ligne que l'entreprise pourrait réaliser pour résoudre le problème. 
 > - "Type" : Identifier le type de tweet :"Positif" : l'utilisateur est content du service que propose Engie, des ces engagements ou de ce que Engie organise. “Plainte" : l'utilisateur se plaint d'un problème."Question : l'utilisateur pose une question. 
-
+> 
 > Voici le message utilisateur : `  
 
 ### 🔹 Exemples d’interactions  
