@@ -3,19 +3,44 @@ import pandas as pd
 
 #pip3 install openpyxl  
 
+class MyChart:
+    def __init__(self, title, tags, chart_function):
+        self.title = title
+        self.tags = tags 
+        self.chart_function = chart_function 
+
 uploaded_file = "filtered_tweets_engie_cleaned.xlsx"
 df = pd.read_excel(uploaded_file)
 
-with st.sidebar:
-    options = ["Problèmes de facturation", "Pannes et urgences", "Service client injoignable", "Problèmes avec l’application", "Délai d’intervention"]
-    selection = st.pills("Catégories", options, selection_mode="multi")
-
-if "Problèmes de facturation" in selection or selection == []:
-    st.title('Dashboard Projet 48h')
-    st.write('## Données')
-    st.dataframe(df.head())  
-
+def nb_tweets_par_heure(df):
     df_count = df.groupby("heure").size().reset_index(name='count')
-
     st.write('## Nombre de tweets par heure')
     st.bar_chart(df_count.set_index('heure'))
+ 
+def nb_tweets_par_mois(df):
+    df_count = df.groupby("mois").size().reset_index(name='count')
+    st.write('## Nombre de tweets par mois')
+    st.bar_chart(df_count.set_index('mois'))
+
+def camembert_sentiment(df):
+    df_count = df.groupby("Sentiment").size().reset_index(name='count')
+    st.write('## Répartition des Sentiments')
+    st.pie_chart(df_count.set_index('Sentiment'))
+
+st.title('Dashboard Projet 48h')
+charts = [
+    MyChart("Graphique 1", ["Temps", "Heure","Historigramme"], nb_tweets_par_heure),
+    MyChart("Graphique 1", ["Temps","Mois","Historigramme"], nb_tweets_par_mois),
+    MyChart("Graphique 3", ["Camembert", "Sentiment"], camembert_sentiment),
+]
+
+with st.sidebar:
+    all_tags = sorted(set(tag for chart in charts for tag in chart.tags))
+    selected_tags = st.multiselect("Filtrer par tags :", options=all_tags)
+
+for chart in charts:
+    if not selected_tags or any(tag in chart.tags for tag in selected_tags):
+        fig = chart.chart_function(df)
+
+
+
