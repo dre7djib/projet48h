@@ -74,7 +74,7 @@ aucune : l'utilisateur n'a pas de problème.
 > - "Solution" : Proposer une solution éventuelle en une ligne que l'entreprise pourrait réaliser pour résoudre le problème. 
 > - "Type" : Identifier le type de tweet :"Positif" : l'utilisateur est content du service que propose Engie, des ces engagements ou de ce que Engie organise. “Plainte" : l'utilisateur se plaint d'un problème."Question : l'utilisateur pose une question. 
 
-Voici le message utilisateur : `  
+> Voici le message utilisateur : `  
 
 ### 🔹 Exemples d’interactions  
 > ![Image d'exemple d'intéraction avec l'agent](images/Interaction.png)
