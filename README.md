@@ -120,10 +120,11 @@ pip install pandas
 pip install google.ai.generativelanguage
 pip install google.generativeai
 
-# Visualisation des données avec Streamlit, Plotly et Openpyxl
+# Visualisation des données avec Streamlit, Plotly, Openpyxl et wordcloud
 pip install streamlit
 pip install plotly 
 pip install openpyxl
+pip install wordcloud 
 ```
 
 ---
