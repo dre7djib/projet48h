@@ -53,7 +53,7 @@ Un **pré-prompt** détaillé est fourni à l’agent, incluant des instructions
 - La classification des sentiments et des problématiques.  
 - La génération des réponses automatiques.  
 
-📌 *Extrait du pré-prompt :*  
+📌 *Pré-prompt :*  
 > `Tu es un agent chargé d'analyser des tweets mentionnant le compte de Engie.
 > Il te sera fourni le commentaire d'un utilisateur.
 > Ton rôle sera d'identifier et de renvoyer 9 facteurs :
